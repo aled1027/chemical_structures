@@ -34,7 +34,12 @@ class Ring(object):
 
 
 def parse_smiles(smiles_string):
-    """ returns a networkx graph"""
+    """ returns a networkx graph based on the SMILES string description"""
+
+    """
+    TODO, not quite right for alpha-pinene. And doesn't support whatever is
+    happening with lower case characters. I think it's aromatic compounds.
+    """
 
     smiles_list = list(smiles_string.upper())
     chemical_symbols = ['H', 'B', 'C', 'N', 'O', 'P', 'S', 'F', 'Cl', 'Br', 'I']
@@ -60,10 +65,8 @@ def parse_smiles(smiles_string):
         if char in chemical_symbols:
             name = char + str(len(G))
             G.add_node(name)
-
             if command == single_bond:
                 G.add_edge(name,prev)
-
             if command == double_bond:
                 G.add_edge(name, prev, weight=2)
             prev = name
@@ -71,8 +74,6 @@ def parse_smiles(smiles_string):
         elif char == double_bond:
             command = double_bond
         elif char == left_paren:
-            # can we have double bond branches?
-            # keep prev as prev
             if branch is None:
                 branch = Branch(prev)
             else:
@@ -91,17 +92,7 @@ def parse_smiles(smiles_string):
         else:
             print("Unrecognized char: " + char)
             print(i)
-
-
-    print(G.nodes())
-    print(G.edges())
     return G
-
-
-    #. 1 assume that it's a simple one:
-    pass
-
-
 
 # need to add in \ to escape \
 ethanol = 'CC(=C)=O'
@@ -110,7 +101,7 @@ benzene = 'c1ccccc1'
 
 g = parse_smiles(a_pinene)
 
-nx.draw(g)
-plt.savefig('a')
+#nx.draw(g)
+#plt.savefig('a')
 
 
