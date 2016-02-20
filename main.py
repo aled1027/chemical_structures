@@ -30,9 +30,6 @@ class Ring(object):
         self.rings.pop(i)
         return self.ring_starts.pop(i)
 
-
-
-
 def parse_smiles(smiles_string):
     """ returns a networkx graph based on the SMILES string description"""
 
